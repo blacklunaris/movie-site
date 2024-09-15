@@ -1,27 +1,51 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client';
-import 'bootstrap/dist/css/bootstrap.css';
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom";
+import { createRoot } from 'react-dom/client';
+import './App.css';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import Login from './components/Login';
+import Carousel from './components/Carousel';
 import MovieCard from './components/MovieCard';
+import Root from './routes/Root';
+import { Button } from 'react-bootstrap';
+import MovieInfo from './components/MovieInfo';
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <div>Hello world!</div>
-  },
-  {
-    path: "/movies",
-    element: <MovieCard MovieName={"Test1"} Season={"Test2"} Episode={"Test3"} EpisodeTitle={"Test4"} />
-  }
-]);
+function App() {
+  return (
+    <Router>
+      <nav className="text-white" style={{ margin: 10 }}>
+        <Link to="/" style={{ padding: 5 }}>
+          Home
+        </Link>
+        <Link to="/movies" style={{ padding: 5 }}>
+          Movies
+        </Link>
+      </nav>
 
-const rootElement = document.getElementById("root");
-const root = ReactDOM.createRoot(rootElement ?? document.createElement("div"));
-root.render(
-  <React.StrictMode>
-    <RouterProvider router={router} />
-  </React.StrictMode>
-);
+      <Routes>
+        <Route path="/" element={<Root />} />
+        <Route
+          path="/movies"
+          element={
+            <Link to="/movieinfo">
+              <MovieCard
+                MovieName={''}
+                Season={''}
+                Episode={''}
+                EpisodeTitle={''}
+              />
+            </Link>
+          }
+        />
+        <Route path="/movieinfo" element={<MovieInfo />} />
+      </Routes>
+    </Router>
+  );
+}
+const rootElement = document.getElementById('root');
+if (rootElement) {
+  const root = createRoot(rootElement);
+  root.render(<App />);
+} else {
+  console.error('Root element not found');
+}
+export default App;
